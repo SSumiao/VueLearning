@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>第一章 Vue的内部指令</title>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<h1>第一章 Vue的内部指令</h1>
+		<hr>
+		<div id="app">
+			<ol>
+				<li><div>
+					<h2>v-if v-else v-show判断是否显示</h4>
+					<p v-if="isLogin">v-if 欢迎登录</p>
+					<p v-else>请登录</p>
+					<p v-show="isLogin">v-show 欢迎登录</p> 
+					<h4>总结：
+						<p>v-if:判断是否加载，可以减轻服务器压力，在需要的时候加载</p>
+						<p>v-show:只调整css display属性，可以使客户端操作更加流畅</p>
+					</h4>
+				</div></li>
+				
+				<li><div>
+					<h2>v-for循环输出</h4>
+					<p>循环输出：<samp v-for="item in items">{{item}} </samp></p>
+					<p>排序：<samp v-for="sitems in sortItems">{{sitems}} </samp></p>
+					<ul>数组输出：
+						<li v-for="(student,index) in students">{{index+1}}:{{student.name}}-{{student.age}}
+						</li>
+					</ul>
+					<ul>数组排序：
+						<li v-for="(student,index) in sortStudents">{{index+1}}:{{student.name}}-{{student.age}}
+						</li>
+					</ul>
+				</div></li>
+			</ol>
+		</div>		
+		<script type="text/javascript">
+			var app=new Vue({
+				el:'#app',
+				data:{
+					isLogin:true,
+					items:[12,65,9,78,93,22,35],
+					sitems:[12,65,9,78,93,22,35],
+					students:[
+						{name:'A',age:23},
+						{name:'B',age:66},
+						{name:'Q',age:41},
+						{name:'U',age:22},
+						{name:'M',age:7},
+						{name:'E',age:85},
+						{name:'P',age:35}
+					]
+				},
+				computed:{
+					// 因会保护原items，所以要重命名一个sortItems
+					sortItems:function(){
+						// sort按照数的第一个数字排序，
+						return this.sitems.sort(sortNumber);
+					},
+					sortStudents:function()
+					{
+						return sortByKey(this.students,'age')
+					}
+				}
+			})
+			// 数字排序
+			function sortNumber(a,b)
+			{
+				return a-b;
+			}
+			// 数组对象排序
+			function sortByKey(array,key)
+			{
+				return array.sort(function(a,b){
+					var x=a[key];
+					var y=b[key];
+					return ((x<y)?-1:((x>y)?1:0))
+				});
+			}
+		</script>
+		
+	</body>
+</html>
